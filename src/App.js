@@ -8,7 +8,16 @@ function Hello(){
 		console.log("created :)");
 		return byeFn; // cleanup function
 	}
-	useEffect(hiFn, []);
+	useEffect(() => {
+		console.log("hi :)");
+		return () => console.log("bye :(");
+	});
+	useEffect(function(){
+		console.log("hi :)");
+		return function(){
+			console.log("bye :(");
+		}
+	}, []);
 	return <h1>Hello</h1>
 }
 
