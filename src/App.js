@@ -7,13 +7,18 @@ function App() {
 	const onChange = (event) => setKeyword(event.target.value);
 	console.log("i run all the time");
 	useEffect(() => {
-		console.log("CALL THE API...");
+		console.log("i run only once.");
 	}, []);
-	// keyword가 변화할 때만 실행되도록, deps에 keyword를 넣어준다
-	// keyword가 바뀔 때만
 	useEffect(() => {
-		console.log("SEARCH FOR", keyword);
+		console.log("i run when 'keyword' changes.");
 	}, [keyword]);
+	useEffect(() => {
+		console.log("i run when 'counter' changes.");
+	}, [counter]);
+	// 두 이펙트를 합칠 수 있음
+	useEffect(() => {
+		console.log("i run when keyword & counter changes.");
+	}, [keyword, counter])
 	return (
 		<div>
 			<input type="text" onChange={onChange} value={keyword} placeholder="Search here"/>
