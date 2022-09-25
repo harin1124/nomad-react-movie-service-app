@@ -1,13 +1,21 @@
-import Button from "./Button";
-import styles from "./App.module.css";
+import {useState, useEffect} from "react";
 
 function App() {
-  return (
-    <div>
-        <h1 className={styles.title}>Welcome back!</h1>
-        <Button text="프로퍼티스 버튼"/>
-    </div>
-  );
+	const [counter, setValue] = useState(0);
+	const onClick = () => setValue(prev => prev+1);
+	// 코드는 state가 변할 때마다 매번 실행되는 console
+	console.log("i run all the time");
+	const iRunOnlyOnce = () => {
+		// 한 번만 실행되는 console
+		console.log("i run only once.");
+	}
+	useEffect(iRunOnlyOnce, []);
+	return (
+		<div>
+			<h1>{counter}</h1>
+			<button onClick={onClick}>Click me</button>
+		</div>
+	);
 }
 
 export default App;
