@@ -23,6 +23,7 @@ function App() {
 						<option key={item.id}>{item.name} ({item.symbol}): {item.quotes.USD.price} USD</option>
 					))}
 				</select>
+
 			)}
 		</div>
 	);
