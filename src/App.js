@@ -1,45 +1,31 @@
 import {useState, useEffect} from "react";
 
 function App() {
-	const [todo, setTodo] = useState("");
-	const [todos, setTodos] = useState([]);
-	const onChange = (event) => setTodo(event.target.value);
-	const onSubmit = (event) => {
-		event.preventDefault();
-		if(todo === ""){
-			return;
-		}
-		// 기존 값을 가져와서 값을 넣어 새로운 array를 반환
-		setTodos((currentArray) => [todo, ...currentArray]);
-		setTodo("");
-	}
-
-	// [추가기능] 해당 투두 삭제 구현
-	const clickItemDelete = (event) => {
-		const idx = Number(event.target.parentElement.getAttribute("data-index"));
-		setTodos((currentArray) => currentArray.filter((item, index) => index !== idx));
-	}
+	const [loading, setLoading] = useState(true);
+	const [coins, setCoins] = useState([]); // 시작값은 빈 배열, 그것도 하지 않으면 undefined 로 밑에 렌더링에서 오류
+	// 아무것도 주시하고 있지 않으면, 단 한 번만 작동 => 컴포넌트의 시작에서만 작동
+	useEffect(() => {
+		fetch("https://api.coinpaprika.com/v1/tickers")
+			.then(response => response.json())
+			.then(json => {
+				setCoins(json.slice(0, 50));
+				setLoading(false);
+			});
+	}, []);
 	return (
 		<div>
-			<h1>My To Dos ({todos.length})</h1>
-			<form onSubmit={onSubmit}>
-				<input
-					type="text"
-					onChange={onChange}
-					value={todo}
-					placeholder="Write your to do..."
-				/>
-				<button onClick={null}>Add To Do</button>
-			</form>
-			<hr/>
-			{todos.map((item, index) => (
-				<li key={index} data-index={index}>
-					<span style={{marginRight:"10px"}}>{item}</span>
-					<button onClick={clickItemDelete}>delete</button>
-				</li>
-			))}
+			<h1>The Coins! {loading ? "" : `(${coins.length})`}</h1>
+			{loading ? (
+				<strong>Loading...</strong>
+			) : (
+				<select>
+					{coins.map((item) => (
+						<option key={item.id}>{item.name} ({item.symbol}): {item.quotes.USD.price} USD</option>
+					))}
+				</select>
+			)}
 		</div>
-	)
+	);
 }
 
 export default App;
