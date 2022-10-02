@@ -1,4 +1,4 @@
-import {useEffect, useState} from "@types/react";
+import {useEffect, useState} from "react";
 import Movie from "../components/Movie";
 
 function Home(){
@@ -9,11 +9,10 @@ function Home(){
 		const json = await response.json();
 		setMovies(json.data.movies);
 		console.log(json.data.movies);
-		setLoading(false)
+		setLoading(false);
 	}
 	useEffect(() => {
 		getMovies();
-
 	}, []);
 	return (
 		<div>
@@ -23,6 +22,8 @@ function Home(){
 				<div>
 					{movies.map((movie) =>
 						<Movie
+							key={movie.id}
+							id={movie.id}
 							title={movie.title}
 							img={movie.medium_cover_image}
 							summary={movie.summary}
